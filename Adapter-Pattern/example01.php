@@ -8,37 +8,6 @@ interface BookInterface
 }
 
 
-interface eReaderInterface 
-{
-    public function turnOn();
-
-    public function pressNextButton();
-}
-
-
-class eReaderAdapter implements BookInterface
-{
-    private $eReader;
-
-    public function __construct(eReaderInterface $eReader)
-    {
-        $this->eReader = $eReader;
-    }
-
-
-    public function open()
-    {
-        return $this->eReader->turnOn();
-    }
-
-
-    public function turnPage()
-    {
-        return $this->eReader->pressNextButton();
-    }
-}
-
-
 class Book implements BookInterface
 {
     public function open()
@@ -51,6 +20,24 @@ class Book implements BookInterface
     {
         var_dump('turning page of paper book');
     }
+}
+
+
+class Person
+{
+    public function read(BookInterface $book)
+    {
+        $book->open();
+        $book->turnPage();
+    }
+}
+
+
+interface eReaderInterface 
+{
+    public function turnOn();
+
+    public function pressNextButton();
 }
 
 
@@ -82,14 +69,36 @@ class Nook implements eReaderInterface
 }
 
 
-class Person
+class eReaderAdapter implements BookInterface
 {
-    public function read(BookInterface $book)
+    private $eReader;
+
+    public function __construct(eReaderInterface $eReader)
     {
-        $book->open();
-        $book->turnPage();
+        $this->eReader = $eReader;
+    }
+
+
+    public function open()
+    {
+        return $this->eReader->turnOn();
+    }
+
+
+    public function turnPage()
+    {
+        return $this->eReader->pressNextButton();
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 (new Person)->read(new Book);
